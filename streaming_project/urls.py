@@ -19,6 +19,13 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("community/", include("aggregator.urls")),
-    path("contact/", include("contact.urls")),
+    path('accounts/', include('allauth.urls')),  # django-allauth網址
+    path(
+        "api/",
+        include(
+            [
+                path("users/", include("new_app.users.urls")),
+            ]
+        ),
+    )
 ]
