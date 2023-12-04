@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'new_app',
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -152,7 +153,7 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:8081',
 )
 
-SITE_ID = os.environ.get("SITE_ID")
+SITE_ID = 2
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
         "SCOPE": [
@@ -165,3 +166,4 @@ SOCIALACCOUNT_PROVIDERS = {
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
+# SOCIALACCOUNT_FORMS = {'signup': 'new_app.allauth.forms.MyCustomSocialSignupForm'}
