@@ -5,36 +5,25 @@
 # https://developers.google.com/explorer-help/code-samples#python
 
 import os
-
+from dotenv import load_dotenv
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
-
+from django.http import JsonResponse
+from .models import StreamClass
+load_dotenv()
 scopes = ["https://www.googleapis.com/auth/youtube.readonly"]
+api_service_name = os.environ.get("API_SERVICE_NAME")
+api_version = os.environ.get("API_VERSION")
+client_secrets_file =  './client_secret_456715957369-o0epqn9ha9m2hme6r6qmiavo47ehm05v.apps.googleusercontent.com.json'
 
-def main():
-    # Disable OAuthlib's HTTPS verification when running locally.
-    # *DO NOT* leave this option enabled in production.
-    os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
-    api_service_name = "youtube"
-    api_version = "v3"
-    client_secrets_file = './client_secret_456715957369-23k4lclnvmhal2e8ueqaond0nls5gpqh.apps.googleusercontent.com.json'
 
-    # Get credentials and create an API client
-    flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
-        client_secrets_file, scopes)
-    credentials = flow.run_local_server(port=8001)
-    youtube = googleapiclient.discovery.build(
-        api_service_name, api_version, credentials=credentials)
+async def getSubscribeList(request):
+    youtube_service = await StreamClass.create_service()
+    response = await StreamClass.getSubscribeList(youtube_service)
+    return JsonResponse(response)
 
-    request = youtube.channels().list(
-        part="snippet,contentDetails,statistics",
-        forUsername="GoogleDevelopers"
-    )
-    response = request.execute()
 
-    print(response)
 
-if __name__ == "__main__":
-    main()
+

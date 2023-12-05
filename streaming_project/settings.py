@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import dj_database_url, os
-
+from dotenv import load_dotenv
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -155,13 +156,20 @@ CORS_ORIGIN_WHITELIST = (
 
 SITE_ID = 2
 SOCIALACCOUNT_PROVIDERS = {
-    "google": {
-        "SCOPE": [
-            "profile",
-            "email"
+    'google': {
+        'APP': {
+            'client_id': os.environ.get("CLIENT_ID"),
+            'secret': os.environ.get("CLIENT_SECRET"),
+            'key': ''
+        },
+        'SCOPE': [
+            'profile',
+            'email',
         ],
-        "AUTH_PARAMS": {"access_type": "online"}
-    },
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
 }
 
 LOGIN_REDIRECT_URL = "/"
