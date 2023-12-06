@@ -22,11 +22,14 @@ urlpatterns = [
     path('', views.homepage_view),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),  # django-allauth網址
+    path('accounts/', include('allauth.socialaccount.urls')),
     path(
         "api/",
         include(
             [
                 path("users/", include("new_app.users.urls")),
+                path("allauth/", include("new_app.allauth.urls")),
+                path("stream/", include("new_app.stream.urls")),
             ]
         ),
     )
