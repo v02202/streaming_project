@@ -7,7 +7,7 @@ from django.template import loader
 
 
 def homepage_view(request):
-  template = loader.get_template('hello.html')
+  template = loader.get_template('base.html')
   context = {
     'now': datetime.datetime.now().strftime("%H:%M:%S"),
   }

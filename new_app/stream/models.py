@@ -1,35 +1,68 @@
-import os
+import os, json
 from dotenv import load_dotenv
+from oauth2client.client import GoogleCredentials
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
-from django.http import JsonResponse
+from ..models import Favorite, Streamer
+from django.contrib.auth.models import User
 
 load_dotenv()
-scopes = ["https://www.googleapis.com/auth/youtube.readonly"]
+scopes = ["https://www.googleapis.com/auth/youtube.readonly"] # View your Youtube account
 api_service_name = os.environ.get("API_SERVICE_NAME")
 api_version = os.environ.get("API_VERSION")
 client_secrets_file =  './client_secret_456715957369-o0epqn9ha9m2hme6r6qmiavo47ehm05v.apps.googleusercontent.com.json'
 
 
+class CheckYoutubeAuth:
+    pass
+
 
 class StreamClass:
-    async def create_service():
-        os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-        # Get credentials and create an API client
+    def __init__(self, credentials = None):
+        self.credentials = credentials
+        self.youtube_service = None
+
+
+    def get_credentials(self):
         flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
-            client_secrets_file, scopes)
-        credentials = flow.run_local_server(port=8001)
+        client_secrets_file, scopes)
+        credentials = flow.run_local_server(port=8001, prompt='consent').to_json() # return refresh-token everytime even for testing
+        print('==== New credentials %s ======' % credentials)
+        self.credentials = credentials
+        return credentials
+
+    def create_service(self):
+        self.credentials = json.loads(self.credentials)
+        gCreds = GoogleCredentials( 
+                self.credentials['token'], 
+                self.credentials['client_id'],
+                self.credentials['client_secret'],
+                refresh_token=self.credentials['refresh_token'], 
+                token_expiry=None,
+                token_uri=self.credentials['token_uri'], 
+                user_agent='Python client library',
+                revoke_uri=None)        
+
         youtube_service = googleapiclient.discovery.build(
-            api_service_name, api_version, credentials=credentials)
-        print('======= youtube service is  built ========')
-        return youtube_service
+            api_service_name, api_version, credentials=gCreds)
+        print('======= youtube service is  built: %s ========' % (youtube_service))
+        self.youtube_service = youtube_service
+        return
     
-    async def getSubscribeList(youtube_service):
-        request = youtube_service.subscriptions().list(
+    def getSubscribeList(self):
+        request = self.youtube_service.subscriptions().list(
             part="snippet,contentDetails",
-            mine=True
+            mine=True,
+            maxResults=10
         )
         response = request.execute()
 
         return response
+    
+
+def store_favorite_streamer(stream_id, user_id):
+    user_obj = User.objects.get(pk=user_id)
+    streamer_obj, created = Streamer.objects.get_or_create(streamer_api_key = stream_id)
+    favorite_obj, created = Favorite.objects.get_or_create(users_oid=user_obj, streamer_oid=streamer_obj)
+    return favorite_obj.favorite_oid

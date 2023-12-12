@@ -3,5 +3,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("subscribe_list", views.getSubscribeList)
+    path("subscribe_list", views.chooseChannel)
 ]

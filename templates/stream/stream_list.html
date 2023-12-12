@@ -1,0 +1,18 @@
+{% extends "./user_list.html" %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <div class="buttons has-addons">
+        {% for subscribe in subscribe_list %}
+            <h2>{{ subscribe.snippet.title }}</h2>
+            <img src="{{ subscribe.snippet.thumbnails.default.url }}" />
+            <button class="button is-success" name="follow" value="{{ subscribe.snippet.channelId }}">
+                Follow
+            </button>
+            <button class="button is-danger" name="unfollow" value="{{ subscribe.snippet.channelId }}">
+                Unfollow
+            </button>
+        {% endfor %}
+    </div>
+</form>
+{% endblock %}
