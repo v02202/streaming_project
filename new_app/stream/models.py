@@ -33,7 +33,8 @@ class StreamClass:
         return credentials
 
     def create_service(self):
-        self.credentials = json.loads(self.credentials)
+        # print('self.credentials', self.credentials.replace("\'", "\""))
+        self.credentials = json.loads(self.credentials.replace("\'", "\""))
         gCreds = GoogleCredentials( 
                 self.credentials['token'], 
                 self.credentials['client_id'],
@@ -58,7 +59,17 @@ class StreamClass:
         )
         response = request.execute()
 
-        return response
+        return response, self.credentials
+    
+    def getStreamList(self, streamer_key):
+        request = self.youtube_service.playlists().list(
+            part="snippet",
+            channelId=streamer_key,
+            maxResults=25
+        )
+        response = request.execute()
+
+        return response, self.credentials
     
 
 def store_favorite_streamer(stream_id, user_id):

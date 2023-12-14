@@ -1,18 +1,24 @@
-{% extends "./user_list.html" %}
-{% block content %}
-<form method="post">
-    {% csrf_token %}
-    <div class="buttons has-addons">
-        {% for subscribe in subscribe_list %}
-            <h2>{{ subscribe.snippet.title }}</h2>
-            <img src="{{ subscribe.snippet.thumbnails.default.url }}" />
-            <button class="button is-success" name="follow" value="{{ subscribe.snippet.channelId }}">
-                Follow
-            </button>
-            <button class="button is-danger" name="unfollow" value="{{ subscribe.snippet.channelId }}">
-                Unfollow
-            </button>
-        {% endfor %}
-    </div>
-</form>
-{% endblock %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>I come from template!!</title>
+        <style>
+            body {
+               background-color: rgb(243, 242, 229);
+            }
+            em {
+                color: rgb(17, 23, 23);
+            }
+        </style>
+    </head>
+    <body>
+        <a href="{% url 'subscribe_list' %}">Back Subsriber list</a>
+        <div class="buttons has-addons">
+            <h2>{{ streamer_title }}</h2>
+            {% for sub_stream_list in stream_list %}
+                <h3>{{ sub_stream_list.snippet.title }}</h3>
+                <img src="{{ sub_stream_list.snippet.thumbnails.medium.url }}" />
+            {% endfor %}
+        </div>
+    </body>
+</html>

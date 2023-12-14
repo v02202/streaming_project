@@ -1,0 +1,21 @@
+{% extends "./user_list.html" %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <div class="buttons has-addons">
+        {% for subscribe in subscribe_list %}
+            <h2>{{ subscribe.snippet.title }}</h2>
+            <img src="{{ subscribe.snippet.thumbnails.default.url }}" />
+            <button class="button is-success" name="follow" value="{{ subscribe.snippet.resourceId.channelId }}">
+                Follow
+            </button>
+            <button class="button is-danger" name="unfollow" value="{{ subscribe.snippet.resourceId.channelId }}">
+                Unfollow
+            </button>
+            <div>
+                <a href="{% url 'stream_list' subscribe.snippet.resourceId.channelId %}">Got To Playlists</a>
+            </div>
+        {% endfor %}
+    </div>
+</form>
+{% endblock %}
