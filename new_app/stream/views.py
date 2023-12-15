@@ -17,7 +17,7 @@ load_dotenv()
 
 max_age = MAX_AGE
 
-def getSubscribeList(youtube_oauth):
+def get_subscribe_list(youtube_oauth):
     stream_obj = StreamClass(youtube_oauth)
     if youtube_oauth is None:
         youtube_oauth = stream_obj.get_credentials()
@@ -26,11 +26,11 @@ def getSubscribeList(youtube_oauth):
     return response, credentials
 
 
-def chooseChannel(request):
+def choose_channel(request):
     if request.method == 'GET':
         youtube_oauth = request.COOKIES.get('youtube_oauth')
         print('---- Get cookie: %s -----' % (youtube_oauth))
-        subscribe_list, credentials = getSubscribeList(youtube_oauth)
+        subscribe_list, credentials = get_subscribe_list(youtube_oauth)
         template = loader.get_template('./stream/streamer_list.html')
         response = HttpResponse(
             template.render({'subscribe_list': subscribe_list['items']}, request)
@@ -53,26 +53,63 @@ def chooseChannel(request):
 
         return redirect("/api/stream/subscribe_list")
 
-def getChannelList(youtube_oauth, streamer_key):
+def get_playlist_list(youtube_oauth, streamer_key):
     stream_obj = StreamClass(youtube_oauth)
     if youtube_oauth is None:
         youtube_oauth = stream_obj.get_credentials()
     stream_obj.create_service()
-    response, credentials = stream_obj.getStreamList(streamer_key)
+    response, credentials = stream_obj.getStreamPlaylistList(streamer_key)
     return response, credentials
 
-def getChannelListView(request, streamer_key):
+def get_playlist_view(request, streamer_key):
     if request.method == 'GET':
         youtube_oauth = request.COOKIES.get('youtube_oauth')
         print('---- Get cookie: %s -----' % (youtube_oauth))
-        stream_list, credentials = getChannelList(youtube_oauth, streamer_key)
+        stream_list, credentials = get_playlist_list(youtube_oauth, streamer_key)
         if len(stream_list['items']) >0:
             streamer_title = stream_list['items'][0]['snippet']['channelTitle']
         else:
             streamer_title = None
-        template = loader.get_template('./stream/stream_list.html')
+        template = loader.get_template('./stream/playlist_list.html')
         response = HttpResponse(
             template.render({'stream_list': stream_list['items'], 'streamer_title': streamer_title}, request)
+        )
+        response.set_cookie(
+            'youtube_oauth', 
+            credentials,
+            max_age=max_age,
+            expires=datetime.datetime.strftime(
+                datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age),
+                "%a, %d-%b-%Y %H:%M:%S GMT",
+            )
+        )
+        return response
+    
+def get_stream_list(youtube_oauth, playlist_id):
+    stream_obj = StreamClass(youtube_oauth)
+    if youtube_oauth is None:
+        youtube_oauth = stream_obj.get_credentials()
+    stream_obj.create_service()
+    response, credentials = stream_obj.getStreamList(playlist_id)
+    return response, credentials
+
+def get_stream_list_view(request, playlist_id):
+    if request.method == 'GET':
+        youtube_oauth = request.COOKIES.get('youtube_oauth')
+        print('---- Get cookie: %s -----' % (youtube_oauth))
+        stream_list, credentials = get_stream_list(youtube_oauth, playlist_id)
+        render_list = []
+        if len(stream_list['items']) >0:
+            for stream in stream_list['items']:
+                print('stream', stream)
+                render_dict = {
+                    'video_title': stream['snippet']['title'],
+                    'video_src':f"https://www.youtube.com/embed/{stream['snippet']['channelId']}"
+                }
+                render_list.append(render_dict)
+        template = loader.get_template('./stream/stream_list.html')
+        response = HttpResponse(
+            template.render({'render_list': render_list}, request)
         )
         response.set_cookie(
             'youtube_oauth', 

@@ -61,7 +61,7 @@ class StreamClass:
 
         return response, self.credentials
     
-    def getStreamList(self, streamer_key):
+    def getStreamPlaylistList(self, streamer_key):
         request = self.youtube_service.playlists().list(
             part="snippet",
             channelId=streamer_key,
@@ -70,6 +70,18 @@ class StreamClass:
         response = request.execute()
 
         return response, self.credentials
+    
+    def getStreamList(self, playlist_id):
+        request = self.youtube_service.playlistItems().list(
+            part="snippet",
+            maxResults=1,
+            playlistId=playlist_id
+        )
+        response = request.execute()
+
+        return response, self.credentials
+    
+    
     
 
 def store_favorite_streamer(stream_id, user_id):
