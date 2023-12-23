@@ -30,6 +30,7 @@ urlpatterns = [
                 path("users/", include("new_app.users.urls")),
                 path("allauth/", include("new_app.allauth.urls")),
                 path("stream/", include("new_app.stream.urls")),
+                path("label/", include("new_app.label.urls")),
             ]
         ),
     )

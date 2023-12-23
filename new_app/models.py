@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 class Label(models.Model):
     label_oid = models.BigAutoField(primary_key=True)
     label_name = models.CharField(max_length=50, blank=True)
+    timestamp = models.IntegerField(blank=False)
     stream_oid = models.ForeignKey(
         "Stream",
         on_delete=models.CASCADE,
@@ -15,6 +16,7 @@ class Label(models.Model):
     owner = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
+        null=True, blank=True
     )
     is_share = models.BooleanField(default = 'false')
     created_time = models.DateField(auto_now_add=True)

@@ -37,6 +37,9 @@
                         <li>
                             <a href="{% url 'subscribe_list' %}">{% trans "Your subscribe streamer" %}</a>
                         </li>
+                        <li>
+                            <a href="{% url 'store_label' %}">{% trans "Add new labels" %}</a>
+                        </li>
                     {% else %}
                         <li>
                             <a href="{% url 'account_login' %}">{% trans "Sign In" %}</a>

@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+               background-color: rgb(248, 248, 245);
+            }
+            em {
+                color: rgb(17, 23, 23);
+            }
+        </style>
+    </head>
+    <body>
+        <a href="{% url 'homepage_view' %}">Back Homepage list</a>
+        <h3>Store your timestamp</h3>
+        <div class="column is-one-third">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="button is-success is-fullwidth is-medium mt-5"
+                        type="submit">Store
+                </button>
+            </form>
+        </div>
+    </body>
+</html>
