@@ -12,14 +12,15 @@
         </style>
     </head>
     <body>
-        <a href="{% url 'subscribe_list' %}">Back Subsriber list</a>
+        <a href="{% url 'subscribe_list' %}">Back Subscribe list</a>
         <div class="buttons has-addons">
-            <h2>{{ streamer_title }}</h2>
-            {% for sub_stream_list in stream_list %}
-                <h3>{{ sub_stream_list.snippet.title }}</h3>
-                <img src="{{ sub_stream_list.snippet.thumbnails.medium.url }}" />
+            
+            {% for sub_stream_list in render_list %}
+            <h2>{{ sub_stream_list.streamer_title }}</h2>
+                <h3>{{ sub_stream_list.playlist_title }}</h3>
+                <img src="{{ sub_stream_list.thumbnails_url }}" />
                 <dev>
-                    <a href="{% url 'get_stream_list_view' sub_stream_list.id %}" type="button" class="btn btn-outline-secondary">See all streams</a>
+                    <a href="{{ sub_stream_list.video_src }}" type="button" class="btn btn-outline-secondary" target="_blank">See all streams</a>
                 </dev>
             {% endfor %}
         </div>

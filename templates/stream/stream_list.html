@@ -12,12 +12,16 @@
         </style>
     </head>
     <body>
-        <a href="{% url 'subscribe_list' %}">Back Subsriber list</a>
+        <a href="{% url 'subscribe_list' %}">Back Back Homepage list</a>
         <div class="buttons has-addons">
-            {% for render_dict in render_list %}
-                <h3>{{ render_dict.video_title }}</h3>
-                <iframe width="560" height="315" src="{{ render_dict.video_src }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-            {% endfor %}
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/aOxVXxYATNc?si=f7fEgQRMeGDqkRst" title="YouTube video player" frameborder="0" sandbox="allow-same-origin allow-scripts allow-popups allow-forms" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/OT7-n-Rk3TQ?si=AzUMpiBdRan9Wer6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          {% for sub_stream_list in render_list %}
+            <h3>{{ sub_stream_list.video_title }}</h3>
+            <iframe width="560" height="315" src="{{ sub_stream_list.video_src }}" title="YouTube video player" frameborder="0" sandbox="allow-same-origin allow-scripts allow-popups allow-forms" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/EOSUXw2Wwvc&t=865s" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe> -->
+            <!-- <iframe width="560" height="315" src="{{ render_dict.video_src }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> -->
+          {% endfor %}
         </div>
     </body>
     <script>
