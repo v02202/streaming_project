@@ -64,15 +64,20 @@ def get_playlist_list(youtube_oauth, streamer_key):
 def get_playlist_view(request, streamer_key):
     if request.method == 'GET':
         youtube_oauth = request.COOKIES.get('youtube_oauth')
-        print('---- Get cookie: %s -----' % (youtube_oauth))
         stream_list, credentials = get_playlist_list(youtube_oauth, streamer_key)
+        render_list = []
         if len(stream_list['items']) >0:
-            streamer_title = stream_list['items'][0]['snippet']['channelTitle']
-        else:
-            streamer_title = None
+            for stream in stream_list['items']:
+                render_dict = {
+                    'streamer_title': stream['snippet']['channelTitle'],
+                    'playlist_title': stream['snippet']['title'],
+                    'thumbnails_url': stream['snippet']['thumbnails']['medium']['url'],
+                    'video_src':f"https://www.youtube.com/playlist?list={stream['id']}"
+                }
+                render_list.append(render_dict)
         template = loader.get_template('./stream/playlist_list.html')
         response = HttpResponse(
-            template.render({'stream_list': stream_list['items'], 'streamer_title': streamer_title}, request)
+            template.render({'render_list': render_list}, request)
         )
         response.set_cookie(
             'youtube_oauth', 
@@ -96,16 +101,19 @@ def get_stream_list(youtube_oauth, playlist_id):
 def get_stream_list_view(request, playlist_id):
     if request.method == 'GET':
         youtube_oauth = request.COOKIES.get('youtube_oauth')
-        print('---- Get cookie: %s -----' % (youtube_oauth))
         stream_list, credentials = get_stream_list(youtube_oauth, playlist_id)
         render_list = []
         if len(stream_list['items']) >0:
+            # render_dict = {
+            #         'video_title': stream_list['items'][0]['snippet']['title'],
+            #         'video_src':f"https://www.youtube.com/embed/{stream_list['items'][0]['snippet']['channelId']}?si=JlnLuzfcSgNTiErB"
+            #     }
             for stream in stream_list['items']:
-                print('stream', stream)
                 render_dict = {
                     'video_title': stream['snippet']['title'],
-                    'video_src':f"https://www.youtube.com/embed/{stream['snippet']['channelId']}"
+                    'video_src':f"https://www.youtube.com/embed/{stream['snippet']['channelId']}?si=JlnLuzfcSgNTiErB"
                 }
+                print('test ------ ', render_dict)
                 render_list.append(render_dict)
         template = loader.get_template('./stream/stream_list.html')
         response = HttpResponse(

@@ -4,7 +4,7 @@ from oauth2client.client import GoogleCredentials
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
-from ..models import Favorite, Streamer
+from ..models import Favorite, Streamer, Stream
 from django.contrib.auth.models import User
 
 load_dotenv()
@@ -12,7 +12,7 @@ scopes = ["https://www.googleapis.com/auth/youtube.readonly"] # View your Youtub
 api_service_name = os.environ.get("API_SERVICE_NAME")
 api_version = os.environ.get("API_VERSION")
 client_secrets_file =  './client_secret_456715957369-o0epqn9ha9m2hme6r6qmiavo47ehm05v.apps.googleusercontent.com.json'
-
+develop_key = os.environ.get("DEVELOP_KEY")
 
 class CheckYoutubeAuth:
     pass
@@ -81,7 +81,21 @@ class StreamClass:
 
         return response, self.credentials
     
-    
+class DevelopYoutubeClass:
+    def __init__(self):
+        self.youtube_service = googleapiclient.discovery.build(
+            api_service_name, api_version, developerKey=develop_key)
+        print('======= youtube service is  built: %s ========' % (self.youtube_service))
+
+
+    def getStreamDetail(self, stream_api_key):
+        request = self.youtube_service.videos().list(
+            part="snippet",
+            id=stream_api_key
+        )
+        response = request.execute()
+
+        return response
     
 
 def store_favorite_streamer(stream_id, user_id):
@@ -89,3 +103,9 @@ def store_favorite_streamer(stream_id, user_id):
     streamer_obj, created = Streamer.objects.get_or_create(streamer_api_key = stream_id)
     favorite_obj, created = Favorite.objects.get_or_create(users_oid=user_obj, streamer_oid=streamer_obj)
     return favorite_obj.favorite_oid
+
+
+def store_stream(stream_key, streamer_key):
+    streamer_obj, created = Streamer.objects.get_or_create(streamer_api_key = streamer_key)
+    stream_obj, created = Stream.objects.get_or_create(stream_api_key = stream_key, streamer_oid = streamer_obj)
+    return stream_obj
