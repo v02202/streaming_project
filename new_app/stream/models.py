@@ -97,6 +97,15 @@ class DevelopYoutubeClass:
 
         return response
     
+    def getStreamerDetail(self, streamer_api_key):
+        request = self.youtube_service.channels().list(
+            part="snippet",
+            id=streamer_api_key
+        )
+        response = request.execute()
+
+        return response
+    
 
 def store_favorite_streamer(stream_id, user_id):
     user_obj = User.objects.get(pk=user_id)

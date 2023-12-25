@@ -35,7 +35,10 @@
                             <a href="{% url 'get_users' %}">{% trans "User menu" %}</a>
                         </li>
                         <li>
-                            <a href="{% url 'subscribe_list' %}">{% trans "Your subscribe streamer" %}</a>
+                            <a href="{% url 'subscribe_list' %}">{% trans "My subscribe streamer" %}</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'get_favorite_streamer' %}">{% trans "My favorite streamer" %}</a>
                         </li>
                         <li>
                             <a href="{% url 'store_label' %}">{% trans "Add new labels" %}</a>

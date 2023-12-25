@@ -31,6 +31,7 @@ urlpatterns = [
                 path("allauth/", include("new_app.allauth.urls")),
                 path("stream/", include("new_app.stream.urls")),
                 path("label/", include("new_app.label.urls")),
+                path("favorite/", include("new_app.favorite.urls")),
             ]
         ),
     )
