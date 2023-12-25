@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 
+CHOICE = [(0, True),(1, False)]
 class Label(models.Model):
     label_oid = models.BigAutoField(primary_key=True)
     label_name = models.CharField(max_length=50, blank=True)
@@ -18,7 +19,7 @@ class Label(models.Model):
         on_delete=models.CASCADE,
         null=True, blank=True
     )
-    is_share = models.BooleanField(default = 'false')
+    is_share = models.BooleanField(choices=CHOICE,default=1, blank=False)
     created_time = models.DateField(auto_now_add=True)
     updated_time = models.DateField(auto_now=True)
 
@@ -36,6 +37,7 @@ class Stream(models.Model):
 class Streamer(models.Model):
     streamer_oid = models.BigAutoField(primary_key=True)
     streamer_api_key = models.CharField(max_length=20, blank=False)
+    streamer_name = models.CharField(max_length=100, null = True, blank=True)
     streamer_group_oid = models.ForeignKey(
         "Streamer_group",
         on_delete=models.CASCADE,
