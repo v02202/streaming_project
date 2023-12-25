@@ -12,7 +12,12 @@
         </style>
     </head>
     <body>
-        <a href="{% url 'homepage_view' %}">Back Homepage list</a>
+        <li>
+            <a href="{% url 'homepage_view' %}">Back Homepage list</a>
+        </li>
+        <li>
+            <a href="{% url 'get_label' %}">My label</a>
+        </li>
         <h3>Store your timestamp</h3>
         <div class="column is-one-third">
             <form method="post">

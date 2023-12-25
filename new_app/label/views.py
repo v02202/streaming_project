@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from .models import LableForm
+from .models import *
 from ..stream.models import store_stream, DevelopYoutubeClass
 from ..users.models import get_user_obj
 from django.shortcuts import render, redirect
@@ -12,6 +12,7 @@ def store_label(request):
     if request.method == 'POST':
         form = LableForm(request.POST)
         if form.is_valid():
+            print('request.POST', request.POST)
             timestamp_url = request.POST['timestamp_url']
             timestamp_list = re.split(r'(\w{11})\?t=(\d*)$', timestamp_url)
             if len(timestamp_list) != 0:
@@ -34,3 +35,13 @@ def store_label(request):
         form = LableForm()
     template = loader.get_template('./label/store_label.html')
     return HttpResponse(template.render({"form": form}, request))
+
+
+
+@login_required
+def get_label(request):
+    if request.method == 'GET':
+        detail_list = get_label_list(request.user.id)
+        template = loader.get_template('./label/get_label.html')
+        return HttpResponse(template.render({'detail_list':detail_list}, request))
+        
