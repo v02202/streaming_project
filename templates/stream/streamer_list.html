@@ -1,21 +1,40 @@
 {% extends "./user_list.html" %}
 {% block content %}
-<form method="post">
-    {% csrf_token %}
-    <div class="buttons has-addons">
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'streamer_list.css' %}">
+<div id="favorite_part">
+    <div class="flex-container">
         {% for subscribe in subscribe_list %}
-            <h2>{{ subscribe.snippet.title }}</h2>
-            <img src="{{ subscribe.snippet.thumbnails.default.url }}" />
-            <button class="button is-success" name="follow" value="{{ subscribe.snippet.resourceId.channelId }}">
-                Follow
-            </button>
-            <button class="button is-danger" name="unfollow" value="{{ subscribe.snippet.resourceId.channelId }}">
-                Unfollow
-            </button>
-            <div>
-                <a href="{% url 'get_playlist_view' subscribe.snippet.resourceId.channelId %}">Got To Playlists</a>
-            </div>
+        {% if subscribe.is_favorite is True %}
+        <div class="item">
+          <h1>{{ subscribe.streamer_title }}</h1>
+          <img src="{{ subscribe.thumbnails_url }}" />
+        </div>
+        {% endif %}
         {% endfor %}
     </div>
-</form>
+</div>
+<div id="subscribe_part">
+    <div class="flex-container-2">
+        <form method="post">
+            {% csrf_token %}
+                {% for subscribe in subscribe_list %}
+                <div class="item-2">
+                    <h2>{{ subscribe.streamer_title }}</h2>
+                    <img src="{{ subscribe.thumbnails_url }}" />
+                    <button class="button is-success" name="follow" value="{{ subscribe.streamer_api_key }}">
+                        Follow
+                    </button>
+                    <button class="button is-danger" name="unfollow" value="{{ subscribe.streamer_api_key }}">
+                        Unfollow
+                    </button>
+                    <div>
+                        <a href="{% url 'get_playlist_view' subscribe.streamer_api_key %}">Got To Playlists</a>
+                    </div>
+                </div>
+                {% endfor %}
+        </form>
+    </div>
+</div>
 {% endblock %}
