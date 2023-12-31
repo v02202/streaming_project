@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from django.http import JsonResponse, HttpResponse
 from django.contrib.sessions.exceptions import SessionInterrupted
 from .models import *
+from ..favorite.models import mergeFavoriteAndSub
 from django.template import loader
 from django.shortcuts import render, redirect
 from ..index import MAX_AGE
@@ -17,23 +18,16 @@ load_dotenv()
 
 max_age = MAX_AGE
 
-def get_subscribe_list(youtube_oauth):
-    stream_obj = StreamClass(youtube_oauth)
-    if youtube_oauth is None:
-        youtube_oauth = stream_obj.get_credentials()
-    stream_obj.create_service()
-    response, credentials = stream_obj.getSubscribeList()
-    return response, credentials
-
 
 def choose_channel(request):
     if request.method == 'GET':
         youtube_oauth = request.COOKIES.get('youtube_oauth')
         print('---- Get cookie: %s -----' % (youtube_oauth))
-        subscribe_list, credentials = get_subscribe_list(youtube_oauth)
+        # subscribe_list, credentials = get_subscribe_list(youtube_oauth)
+        subscribe_list, credentials = mergeFavoriteAndSub(request.user.id, youtube_oauth)
         template = loader.get_template('./stream/streamer_list.html')
         response = HttpResponse(
-            template.render({'subscribe_list': subscribe_list['items']}, request)
+            template.render({'subscribe_list': subscribe_list}, request)
         )
         response.set_cookie(
             'youtube_oauth', 

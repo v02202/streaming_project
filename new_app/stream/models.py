@@ -118,3 +118,19 @@ def store_stream(stream_key, streamer_key):
     streamer_obj, created = Streamer.objects.get_or_create(streamer_api_key = streamer_key)
     stream_obj, created = Stream.objects.get_or_create(stream_api_key = stream_key, streamer_oid = streamer_obj)
     return stream_obj
+
+def get_subscribe_list(youtube_oauth):
+    stream_obj = StreamClass(youtube_oauth)
+    if youtube_oauth is None:
+        youtube_oauth = stream_obj.get_credentials()
+    stream_obj.create_service()
+    response, credentials = stream_obj.getSubscribeList()
+    reponse_list = []
+    for item in response['items']:
+        streamer_dict = {
+            'streamer_title':item['snippet']['title'],
+            'streamer_api_key':item['snippet']['channelId'],
+            'thumbnails_url':item['snippet']['thumbnails']['medium']['url'],
+        }
+        reponse_list.append(streamer_dict)
+    return reponse_list, credentials
