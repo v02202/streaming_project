@@ -113,6 +113,15 @@ def store_favorite_streamer(stream_id, user_id):
     favorite_obj, created = Favorite.objects.get_or_create(users_oid=user_obj, streamer_oid=streamer_obj)
     return favorite_obj.favorite_oid
 
+def remove_favorite_streamer(stream_id, user_id):
+    streamer_obj = Streamer.objects.get(streamer_api_key=stream_id)
+    favorite_obj = Favorite.objects.get(
+        streamer_oid = streamer_obj.streamer_oid, 
+        users_oid = user_id
+    )
+    favorite_obj.delete()
+    return True
+
 
 def store_stream(stream_key, streamer_key):
     streamer_obj, created = Streamer.objects.get_or_create(streamer_api_key = streamer_key)
@@ -129,7 +138,7 @@ def get_subscribe_list(youtube_oauth):
     for item in response['items']:
         streamer_dict = {
             'streamer_title':item['snippet']['title'],
-            'streamer_api_key':item['snippet']['channelId'],
+            'streamer_api_key':item['snippet']['resourceId']['channelId'],
             'thumbnails_url':item['snippet']['thumbnails']['medium']['url'],
         }
         reponse_list.append(streamer_dict)

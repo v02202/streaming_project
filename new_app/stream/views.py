@@ -41,10 +41,13 @@ def choose_channel(request):
         return response
     
     elif request.method == 'POST':
-        stream_id = request.POST['follow']
-        print(stream_id)
-        favorite_oid = store_favorite_streamer(stream_id, request.user.id)
-
+        if request.POST.get('follow', None):
+            stream_id = request.POST['follow']
+            store_favorite_streamer(stream_id, request.user.id)
+        elif request.POST.get('remove', None):
+            stream_id = request.POST['remove']
+            print(stream_id)
+            remove_favorite_streamer(stream_id, request.user.id)
         return redirect("/api/stream/subscribe_list")
 
 def get_playlist_list(youtube_oauth, streamer_key):

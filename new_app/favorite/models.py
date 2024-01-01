@@ -21,5 +21,4 @@ def mergeFavoriteAndSub(user_oid, youtube_oauth):
             item['is_favorite'] = True
         else:
             item['is_favorite'] = False
-    print('------ reponse_list ------ ', reponse_list)
     return reponse_list, credentials
