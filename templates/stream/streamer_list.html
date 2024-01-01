@@ -4,30 +4,37 @@
 
 <link rel="stylesheet" href="{% static 'streamer_list.css' %}">
 <div id="favorite_part">
+    <h1>Favorite streamer</h1>
     <div class="flex-container">
-        {% for subscribe in subscribe_list %}
-        {% if subscribe.is_favorite is True %}
-        <div class="item">
-          <h1>{{ subscribe.streamer_title }}</h1>
-          <img src="{{ subscribe.thumbnails_url }}" />
-        </div>
-        {% endif %}
-        {% endfor %}
+        <form method="post">
+            {% csrf_token %}
+            {% for subscribe in subscribe_list %}
+            {% if subscribe.is_favorite is True %}
+            <div class="item">
+                <h1>{{ subscribe.streamer_title }}</h1>
+                <img src="{{ subscribe.thumbnails_url }}" />
+                <div class="btn-container">
+                    <button class="button is-success" name="remove" value="{{ subscribe.streamer_api_key }}">
+                        Remove
+                    </button>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </form>
     </div>
 </div>
 <div id="subscribe_part">
-    <div class="flex-container-2">
+    <h1>Youtube subscribed streamer</h1>
+    <div class="container">
         <form method="post">
             {% csrf_token %}
                 {% for subscribe in subscribe_list %}
-                <div class="item-2">
+                <div class="col">
                     <h2>{{ subscribe.streamer_title }}</h2>
                     <img src="{{ subscribe.thumbnails_url }}" />
                     <button class="button is-success" name="follow" value="{{ subscribe.streamer_api_key }}">
-                        Follow
-                    </button>
-                    <button class="button is-danger" name="unfollow" value="{{ subscribe.streamer_api_key }}">
-                        Unfollow
+                        Add to favorite
                     </button>
                     <div>
                         <a href="{% url 'get_playlist_view' subscribe.streamer_api_key %}">Got To Playlists</a>
