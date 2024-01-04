@@ -1,0 +1,81 @@
+#favorite_part,
+#subscribe_part,
+
+#favorite_part {
+    top: 0;
+    background-color: orange;
+}
+
+#subscribe_part {
+    bottom: 0;
+    background-color: rgb(228, 240, 228);
+}
+
+.flex-container {
+    display: flex;
+    flex-direction:row;
+
+    flex-wrap: wrap-reverse;
+    /* // 修改以下值試試看 flex-start | flex-end | center | space-between | space-around; */
+    justify-content: space-around;
+
+    /* // 修改以下值試試看 flex-start | flex-end | center | space-between | space-around | stretch */
+    align-content: flex-start;
+    align-items: flex-start;
+}
+  
+  
+.item {
+    width: 20%;
+    margin: 2px;
+    justify-content: space-around;
+    align-items: flex-start;
+    color: #526E89;
+    font-size: 2rem;
+    padding:10px;
+}
+
+.flex-container-2 {
+    display: flex;
+    flex-direction:row;
+
+    flex-wrap: wrap-reverse;
+    /* // 修改以下值試試看 flex-start | flex-end | center | space-between | space-around; */
+    justify-content: space-around;
+
+    /* // 修改以下值試試看 flex-start | flex-end | center | space-between | space-around | stretch */
+    align-content: flex-start;
+    align-items: flex-start;
+}
+  
+  
+.item-2 {
+    width: 20%;
+    margin: 2px;
+    justify-content: space-around;
+    align-items: flex-start;
+    color: #526E89;
+    font-size: 2rem;
+    padding:10px;
+}
+  
+/* .flex-2 {
+    width: 40%;
+    height: 120px;
+    background-color: #f08bc3;
+} */
+
+h1{margin: 0 0 10px 0 !important;font-size:2rem}
+p{font-size:1.2rem;}
+
+.btn-container {
+    /* // the container will have half the width of the screen */
+    width: 50vw; 
+    /* // flex will make all item sit side by side by default */
+    display: flex; 
+    /* // flex items to sit below prior flex items if no space in that row. */
+    flex-wrap: wrap;
+}
+form{
+    display:inline;
+  }

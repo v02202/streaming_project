@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+               background-color: rgb(243, 242, 229);
+            }
+            em {
+                color: rgb(17, 23, 23);
+            }
+        </style>
+    </head>
+    <body>
+        <a href="{% url 'homepage_view' %}">Back Homepage list</a>
+        <div class="buttons has-addons">
+            
+            {% for streamer_detail in streamer_list %}
+            <h2>{{ streamer_detail.streamer_title }}</h2>
+                <img src="{{ streamer_detail.thumbnails_url }}" />
+            {% endfor %}
+        </div>
+    </body>
+</html>
+
+{% extends "./streamer_list.html" %}
+{% block favorite-part %}

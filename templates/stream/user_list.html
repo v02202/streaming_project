@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>I come from template!!</title>
+        <style>
+            em {
+                color: rgb(17, 23, 23);
+            }
+        </style>
+    </head>
+    <body>
+        <a href="{% url 'homepage_view' %}">Back Homepage</a>
+        <h1>Welcome to streaming project</h1>
+        <p>You are login in as {{ user_name }} with ID: {{ user_id }}</p>
+        <p>Your email is {{ user_email }}</p>
+        {% block content %}
+        {% endblock content %}
+    </body>
+</html>

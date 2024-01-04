@@ -16,9 +16,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from new_app import views
 
 urlpatterns = [
+    path('', views.homepage_view, name='homepage_view'),
     path('admin/', admin.site.urls),
-    path("community/", include("aggregator.urls")),
-    path("contact/", include("contact.urls")),
+    path('accounts/', include('allauth.urls')),  # django-allauth網址
+    path('accounts/', include('allauth.socialaccount.urls')),
+    path(
+        "api/",
+        include(
+            [
+                path("users/", include("new_app.users.urls")),
+                path("allauth/", include("new_app.allauth.urls")),
+                path("stream/", include("new_app.stream.urls")),
+                path("label/", include("new_app.label.urls")),
+                path("favorite/", include("new_app.favorite.urls")),
+            ]
+        ),
+    )
 ]

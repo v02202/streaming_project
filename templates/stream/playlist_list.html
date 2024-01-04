@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>I come from template!!</title>
+        <style>
+            body {
+               background-color: rgb(243, 242, 229);
+            }
+            em {
+                color: rgb(17, 23, 23);
+            }
+        </style>
+    </head>
+    <body>
+        <a href="{% url 'subscribe_list' %}">Back Subscribe list</a>
+        <div class="buttons has-addons">
+            
+            {% for sub_stream_list in render_list %}
+            <h2>{{ sub_stream_list.streamer_title }}</h2>
+                <h3>{{ sub_stream_list.playlist_title }}</h3>
+                <img src="{{ sub_stream_list.thumbnails_url }}" />
+                <dev>
+                    <a href="{{ sub_stream_list.video_src }}" type="button" class="btn btn-outline-secondary" target="_blank">See all streams</a>
+                </dev>
+            {% endfor %}
+        </div>
+    </body>
+</html>
