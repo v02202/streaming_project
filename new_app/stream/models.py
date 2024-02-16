@@ -11,7 +11,7 @@ load_dotenv()
 scopes = ["https://www.googleapis.com/auth/youtube.readonly"] # View your Youtube account
 api_service_name = os.environ.get("API_SERVICE_NAME")
 api_version = os.environ.get("API_VERSION")
-client_secrets_file =  './client_secret_456715957369-o0epqn9ha9m2hme6r6qmiavo47ehm05v.apps.googleusercontent.com.json'
+client_secrets_file =  os.environ.get("CLIENT_JSON")
 develop_key = os.environ.get("DEVELOP_KEY")
 
 class CheckYoutubeAuth:
