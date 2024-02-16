@@ -16,6 +16,7 @@ def store_label(request):
             timestamp_url = request.POST['timestamp_url']
             timestamp_list = re.split(r'(\w{11})\?t=(\d*)$', timestamp_url)
             if len(timestamp_list) != 0:
+                print('timestamp_list', timestamp_list)
                 stream_api_key = timestamp_list[1]
                 timestamp = int(timestamp_list[2])
                 
